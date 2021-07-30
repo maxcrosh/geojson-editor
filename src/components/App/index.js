@@ -9,7 +9,6 @@ import { CodeEditor } from '../CodeEditor'
 // Config
 import { API_KEY } from '../../config'
 
-
 // Styled components
 import { 
   MainContainer,
@@ -29,8 +28,13 @@ import {
 
 export const App = props => {
   
+  const initialGeojson = JSON.stringify({ 
+    type: "FeatureCollection",
+    features: []
+  }, null, 2)
 
-  const [geojson, setGeojson] = useState(`{\n  "type": "FeatureCollection",\n  "features": []\n}`)
+  const [map, setMap] = useState()
+  const [geojson, setGeojson] = useState(initialGeojson)
 
   const icon_size = 20
 
@@ -47,10 +51,18 @@ export const App = props => {
             <GeocoderSearch placeholder='Address search'/>
           </SearchContainer>
         </MapNavbar>
-        <MapContainer apikey={API_KEY}/>
+        <MapContainer 
+          apikey={API_KEY}
+          map={map}
+          geojsonData={geojson}
+          setMap={setMap}
+        />
       </MapSection>
       <EditorSection>
-        <CodeEditor value={geojson}/>
+        <CodeEditor 
+          value={geojson}
+          setGeojson={setGeojson}
+        />
       </EditorSection>
     </MainContainer>
   )

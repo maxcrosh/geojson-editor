@@ -1,13 +1,22 @@
-import React, { useRef, useState, useEffect } from 'react'
+// Node modules
+import React, { useRef, useEffect } from 'react'
 import H from "@here/maps-api-for-javascript"
 
+// Geometry operations
+import { createLayer } from '../../geometryOps'
+
+// Styled components
 import { MapContainerStyled } from './style'
 
 export const MapContainer = props => {
-    const { apikey } = props
+    const { 
+        apikey,
+        map,
+        setMap,
+        geojsonData,
+    } = props
 
     const mapRef = useRef()
-    const [map, setMap] = useState()
 
     useEffect(() => {
         if (!map) {
@@ -79,7 +88,25 @@ export const MapContainer = props => {
             
             setMap(map)
         }
-    }, [map, apikey])
+    }, [map, setMap, apikey])
+
+    if (map) {
+        map.removeObjects(map.getObjects())
+
+        const geojsonLayer = createLayer()
+        map.addObject(geojsonLayer)
+        
+        try {
+            let data = JSON.parse(geojsonData)
+
+            let reader = new H.data.geojson.Reader()
+            reader.parseData(data)
+
+            geojsonLayer.addObjects(reader.getParsedObjects());
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return <MapContainerStyled ref={mapRef}/>
 }

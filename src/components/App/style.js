@@ -3,13 +3,15 @@ import styled from 'styled-components/macro'
 export const MainContainer = styled.div`
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 5fr 2fr;
     // grid-gap: 0.5vw;
     height: 100vh;
     width: 100vw;
 `
 
 export const MapSection = styled.div`
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
 `
@@ -24,6 +26,8 @@ export const MapNavbar = styled.div`
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    box-shadow: -12px -2px 8px 1px #696969;
+    z-index: 2;
 `
 export const BrandContainer = styled.div`
     display: flex;
